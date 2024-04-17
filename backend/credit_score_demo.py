@@ -58,6 +58,20 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    user_id = data["userId"]
+    name = data["password"]
+    print(user_id)
+    print(name)
+    df = pd.DataFrame.from_records((col.find({"Customer_ID":int(user_id)}, {"_id":0})))
+    print(df)
+    if df.shape[0]>0 and (df["Name"].values[0].split(" ")[0].lower()==name.lower()):
+        return jsonify({"message": "Login Successfull"})
+    else:
+        return jsonify({"message": "Login Failed"},status=401)
+
 @app.route("/credit_score/<user_id>", methods=["GET"])
 def get_credit_score(user_id):
     pred , allowed_credit_limit, user_profile_ip = get_user_profile(user_id)
