@@ -102,4 +102,4 @@ def product_suggetions():
 
 if __name__ == "__main__":   # Please do not set debug=True in production
     # print(get_user_profile(8625))
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
