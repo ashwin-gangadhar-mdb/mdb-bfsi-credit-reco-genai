@@ -36,7 +36,7 @@ const Sidebar = ({ profileInfo }) => {
   const [Type_of_Loan, setType_of_Loan] = useState(profileInfo.Type_of_Loan);
   const [Monthly_Balance, setMonthly_Balance] = useState(profileInfo.Monthly_Balance);
   const [Payment_Behaviour, setPayment_Behaviour] = useState(profileInfo.Payment_Behaviour);
-  const [Interest_Rate , setInterest_Rate] = useState(profileInfo.Interest_Rate);
+  const [Interest_Rate, setInterest_Rate] = useState(profileInfo.Interest_Rate);
   const [Outstanding_Debt, setOutstanding_Debt] = useState(profileInfo.Outstanding_Debt);
   const [Num_Credit_Card, setNum_Credit_Card] = useState(profileInfo.Num_Credit_Card);
   const [Num_Bank_Accounts, setNum_Bank_Accounts] = useState(profileInfo.Num_Bank_Accounts);
@@ -47,18 +47,18 @@ const Sidebar = ({ profileInfo }) => {
   const setters = {
     age: setAge,
     income: setIncome,
-    annualIncome : setAnnual_Income,
-    creditMix : setCredit_Mix,
-    creditUtilizationRatio : setCredit_Utilization_Ratio,
-    typeOfLoan : setType_of_Loan,
-    monthlyBalance : setMonthly_Balance,
-    paymentBehaviour : setPayment_Behaviour,
-    interestRate : setInterest_Rate,
-    outstandingDebt : setOutstanding_Debt,
-    numCreditCard : setNum_Credit_Card,
-    numBankAccounts : setNum_Bank_Accounts,
-    totalEMIperMonth : setTotal_EMI_per_month,
-    monthlyInhandSalary : setMonthly_Inhand_Salary
+    annualIncome: setAnnual_Income,
+    creditMix: setCredit_Mix,
+    creditUtilizationRatio: setCredit_Utilization_Ratio,
+    typeOfLoan: setType_of_Loan,
+    monthlyBalance: setMonthly_Balance,
+    paymentBehaviour: setPayment_Behaviour,
+    interestRate: setInterest_Rate,
+    outstandingDebt: setOutstanding_Debt,
+    numCreditCard: setNum_Credit_Card,
+    numBankAccounts: setNum_Bank_Accounts,
+    totalEMIperMonth: setTotal_EMI_per_month,
+    monthlyInhandSalary: setMonthly_Inhand_Salary
   };
 
   const defaultSliderStyle = {
@@ -121,7 +121,7 @@ const Sidebar = ({ profileInfo }) => {
     console.log('Submitted user data:', userData);
 
     const clientId = localStorage.getItem('clientId');
-    const filter = { "Customer_ID": parseInt(clientId, 10)}
+    const filter = { "Customer_ID": parseInt(clientId, 10) }
 
     const body = { "filter": filter, "update": { $set: userData } };
     console.log('body:', body);
@@ -144,16 +144,16 @@ const Sidebar = ({ profileInfo }) => {
       {isPopupOpen && <div className="header-backdrop" />}
       {isPopupOpen && <div className="button-backdrop" />}
       <div className={styles.sidebar}>
-        <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around", marginBottom: "10%"}}>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", marginBottom: "10%" }}>
           <img className={styles.profileImage} src={'/images/userAvatar.png'} alt="Profile" />
           {profileInfo && (
-            <div style={{marginTop: "10%"}} >
+            <div style={{ marginTop: "10%" }} >
               <H3> {profileInfo.Name}</H3>
               <Subtitle> {profileInfo.Occupation}</Subtitle>
               <Subtitle> {profileInfo.Age} years</Subtitle>
-              <Subtitle >{profileInfo.ID}</Subtitle> 
+              <Subtitle >{profileInfo.ID}</Subtitle>
             </div>
-          
+
           )}
         </div>
         <div className={styles.profileDetails}>
@@ -224,7 +224,7 @@ const Sidebar = ({ profileInfo }) => {
                 <Body style={{ width: "25%" }}><strong>Payment Behaviour:&nbsp;</strong></Body>
                 <Body baseFontSize={9} style={{ width: "45%" }}>{Payment_Behaviour}</Body>
               </div>
-              
+
 
               <div className={styles.profileItem}>
                 <Button style={{
@@ -233,13 +233,12 @@ const Sidebar = ({ profileInfo }) => {
                 }} onClick={handleSubmit}> Save Profile </Button>
               </div>
 
-              <div style={{marginTop: "5em", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
-                <Body style={{color: "dark-green"}}> Made with &hearts; by </Body>
-                <Body> <a href="https://your-url.com" target="_blank" rel="noopener noreferrer">Ashwin Gangadhar</a> </Body>
-                <Body> <a href="https://your-url.com" target="_blank" rel="noopener noreferrer">Paul Claret</a></Body>
-                <Body> <a href="https://your-url.com" target="_blank" rel="noopener noreferrer">Utsav Talwar</a></Body>
+              <div style={{ position: "fixed", bottom: 0, width: "100%", display: "flex", flexDirection: "row"}}>
+                <Body style={{ color: "dark-green", margin: '5px' }}> Made with &hearts; by </Body>
+                <Body style={{ margin: '5px' }}> <a href="https://your-url.com" target="_blank" rel="noopener noreferrer">Ashwin Gangadhar</a> </Body>
+                <Body style={{ margin: '5px' }}> <a href="https://your-url.com" target="_blank" rel="noopener noreferrer">Paul Claret</a></Body>
+                <Body style={{ margin: '5px' }}> <a href="https://your-url.com" target="_blank" rel="noopener noreferrer">Utsav Talwar</a></Body>
               </div>
-              
             </>
           )}
         </div>
