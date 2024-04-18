@@ -44,7 +44,7 @@ get_credit_score_expl_prompt = PromptTemplate.from_template(
     - Processed Credit Limit for the user={allowed_credit_limit}
          
 
-    Explain the Descision for Credit Score Profile and Processed Credit limit in points:[Reason]
+    Explain the Descision for Credit Score Profile and Processed Credit limit within 250 words in points:[Reason]
     """
 )
 
@@ -61,7 +61,7 @@ get_credit_card_recommendations_prompt = PromptTemplate.from_template(
     ## Credit cards Recommendations:
     {card_suggestions}
 
-    ## Recommendations=Output as Json with card name as Key and concise reasons point by point as Value:
+    ## Recommendations=Output as Json with card name as Key and concise summary of card to upsell as Value:
     {{"CardName1":"personalized_product_description_1","CardName2":"personalized_product_description_2",...}}
     """
 )
@@ -69,7 +69,9 @@ get_credit_card_recommendations_prompt = PromptTemplate.from_template(
 
 user_profile_based_cc_rec_prompt = PromptTemplate.from_template(
 """
-##Instruction: Given the user profile recommended credit cards that will best fit the user profile. Provide reason as to why the credit card is suggested to the user for each card.
+## ML Model Inference Results on User Profile:
+- Credit Health={pred}
+- Processed Credit Limit for the user={allowed_credit_limit}
 
 ## User profile:
 {user_profile}
@@ -77,10 +79,9 @@ user_profile_based_cc_rec_prompt = PromptTemplate.from_template(
 ##Values for given user profile used to predict the Credit Score Profile:
 {user_profile_ip}
 
-## ML Model Inference Results on User Profile:
-- Credit Health={pred}
-- Processed Credit Limit for the user={allowed_credit_limit}
+##Instruction: Given the user profile recommended credit cards that will best fit the user profile.
+- Take into account user annual income, occupation, credit mix while preparing search term to query the vector search
+-{search_term_suggestion}
 
-## 5 Recommendations with reasons:
 """
 )

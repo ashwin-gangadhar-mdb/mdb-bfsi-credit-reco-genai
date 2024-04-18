@@ -3,6 +3,7 @@ import joblib
 from pymongo import MongoClient
 import certifi
 import os
+import json
 
 import numpy as np
 
@@ -77,6 +78,7 @@ def get_credit_score(user_id):
     pred , allowed_credit_limit, user_profile_ip = get_user_profile(user_id)
     response = get_credit_score_expl(user_profile_ip, pred, allowed_credit_limit, get_model_feature_imps())
     print(response)
+    response = response.strip()
     return jsonify({"userProfile": response, "userCreditProfile": pred, "allowedCreditLimit": allowed_credit_limit, "userId": user_id})
 
 @app.route("/product_suggestions", methods=["POST"])
@@ -87,10 +89,16 @@ def product_suggetions():
     pred = data["userCreditProfile"]
     allowed_credit_limit = data["allowedCreditLimit"]
     _,_,user_profile_ip = get_user_profile(user_id)
-    card_suggestions = get_product_suggestions(user_profile, user_profile_ip, pred, allowed_credit_limit)
-    product_recommendations = get_credit_card_recommendations(user_profile, user_profile_ip, pred, \
+    user_profile_ip_final = {}
+    # Select only specific fields required in for retrieving relevant products
+    for k in ["Occupation", "Annual_Income", "Monthly_Inhand_Salary", "Type_of_Loan", "Credit_Mix", "Payment_of_Min_Amount", "Total_EMI_per_month", "Amount_invested_monthly", "Payment_Behaviour"]:
+        user_profile_ip_final[k] = user_profile_ip[k]
+    card_suggestions = get_product_suggestions(user_profile, json.dumps(user_profile_ip_final), pred, allowed_credit_limit)
+    product_recommendations = get_credit_card_recommendations(user_profile, json.dumps(user_profile_ip_final), pred, \
                                                               allowed_credit_limit, card_suggestions)
-    return jsonify({"productRecommendations": product_recommendations})
+    product_recommendations = product_recommendations.replace("\n","").replace('\"', '"').strip()
+    print(product_recommendations)
+    return jsonify({"productRecommendations": json.loads(product_recommendations)})
 
 if __name__ == "__main__":   # Please do not set debug=True in production
     # print(get_user_profile(8625))
