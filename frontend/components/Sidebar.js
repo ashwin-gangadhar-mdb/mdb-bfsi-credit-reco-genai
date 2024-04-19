@@ -25,7 +25,7 @@ import ProfileSlider from '../components/ProfileSlider';
 
 const Sidebar = ({ profileInfo }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
-
+  console.log(profileInfo);
   const [Name, setName] = useState(profileInfo.Name);
   const [Occupation, setOccupation] = useState(profileInfo.Occupation);
   const [Age, setAge] = useState(profileInfo.Age);
@@ -151,7 +151,7 @@ const Sidebar = ({ profileInfo }) => {
               <H3> {profileInfo.Name}</H3>
               <Subtitle> {profileInfo.Occupation}</Subtitle>
               <Subtitle> {profileInfo.Age} years</Subtitle>
-              <Subtitle >{profileInfo.ID}</Subtitle>
+              <Subtitle >{profileInfo.Customer_ID}</Subtitle>
             </div>
 
           )}
@@ -212,17 +212,17 @@ const Sidebar = ({ profileInfo }) => {
               <br></br>
               <div className={styles.profileItem}>
                 <Body style={{ width: "25%" }}><strong>Credit Mix:&nbsp;</strong></Body>
-                <Body baseFontSize={9} style={{ width: "45%" }}>{Credit_Mix}</Body>
+                <Body baseFontSize={9} style={{ width: "70%" }}><h3>{Credit_Mix}</h3></Body>
               </div>
 
               <div className={styles.profileItem}>
                 <Body style={{ width: "25%" }}><strong>Type of Loan:&nbsp;</strong></Body>
-                <Body baseFontSize={9} style={{ width: "45%" }}>{Type_of_Loan}</Body>
+                <Body baseFontSize={9} style={{ width: "70%" }}><h3>{Type_of_Loan.replaceAll(",", ", ")}</h3></Body>
               </div>
 
               <div className={styles.profileItem}>
                 <Body style={{ width: "25%" }}><strong>Payment Behaviour:&nbsp;</strong></Body>
-                <Body baseFontSize={9} style={{ width: "45%" }}>{Payment_Behaviour}</Body>
+                <Body baseFontSize={9} style={{ width: "70%" }}><h3>{Payment_Behaviour.replaceAll('_', " ")}</h3></Body>
               </div>
 
 

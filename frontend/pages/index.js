@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import { H1, H2, H3, Body } from '@leafygreen-ui/typography';
 import TextWithImage from '../components/TextWithImage';
 import { Tabs, Tab } from '@leafygreen-ui/tabs';
+import { SearchParamsContext } from 'next/dist/shared/lib/hooks-client-context.shared-runtime';
 
 
 const HomePage = () => {
@@ -18,7 +19,9 @@ const HomePage = () => {
   const [recSets, setRecSets] = useState({ "product_suggestions": null })
   const [error, setError] = useState(false)
   const [health, setHealth] = useState(null)
-  const labels = ["Repayment History", "Credit Utilization", "Credit History", "Net Credit", "Outstanding", "Credit Score"];
+  const [scorecardScoreFeatures, setScorecardScoreFeatures] = useState({ "Repayment History": 0, "Credit Utilization": 0, "Credit History": 0, "Outstanding": 0, "Num Credit Inquiries": 0, "Credit Score": 0})
+  const [scoreCardCreditScore, setScoreCardCreditScore] = useState(0)
+  const labels = ["Repayment History", "Credit Utilization", "Credit History", "Outstanding", "Num Credit Inquiries", "Credit Score"];
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -87,6 +90,9 @@ const HomePage = () => {
       setLoading2(false);
       console.log('text', text);
       setHealth(text.userCreditProfile);
+      setScorecardScoreFeatures(text.scorecardScoreFeatures)
+      setScoreCardCreditScore(text.scoreCardCreditScore)
+      console.log('scorecardScoreFeatures', text.scorecardScoreFeatures)
       // if (text["approvalStatus"] == "Approved" ) {
       //   await setStatus(true);
       // } else {
@@ -153,7 +159,7 @@ const HomePage = () => {
       ) : (
         <div></div>
       )}
-      <Body baseFontSize={16} as="pre" style={{ wordWrap: 'break-word', overflowX: 'hidden', whiteSpace: 'pre-line', overflowX: 'hidden', fontSize: '19px', fontFamily: 'sans-serif', }} >
+      <Body baseFontSize={16} as="pre" style={{ wordWrap: 'break-word', overflowX: 'hidden', whiteSpace: 'pre-line', overflowX: 'hidden', fontSize: '19px', fontFamily: 'sans-serif', lineHeight: 2 }} >
         {explSets["userProfile"]}
       </Body>
       {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
@@ -165,33 +171,37 @@ const HomePage = () => {
         />
       </div> */}
 
-
-<div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', marginTop: "40px" }}>
-  {Array(6).fill().map((_, i) => (
-    <React.Fragment key={i}>
-      <div
-        style={{
-          background: '#FFFFFF',
-          border: 'none',
-          borderRadius: '8px',
-          boxShadow: '0 2px 10px 0 rgba(70, 76, 79, .2)',
-          width: '155px', // Adjusted width
-          height: '85px', // Adjusted height
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          margin: '10px' // Added margin
-        }}
-      >
-        <H1>48</H1>
-        <Body>{labels[i]}</Body>
+      <H3></H3>
+      <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', marginTop: "40px" }}>
+        <H3 style={{ display: 'inline' }}>Traditional Scorecard Based Credit Scoring</H3>
       </div>
-      {i < 4 && <div style={{ margin: '5px' }}>+</div>}
-      {i == 4 && <div style={{ margin: '10px' }}>=</div>}
-    </React.Fragment>
-  ))}
-</div>
+      <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', marginTop: "40px" }}>
+        {Array(6).fill().map((_, i) => (
+          <React.Fragment key={i}>
+            <div
+              style={{
+                background: '#FFFFFF',
+                border: 'none',
+                borderRadius: '8px',
+                boxShadow: '0 2px 10px 0 rgba(70, 76, 79, .2)',
+                width: '155px', // Adjusted width
+                height: '85px', // Adjusted height
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                margin: '10px' // Added margin
+              }}
+            >
+              {i < 5 && <H1>{Math.round(scorecardScoreFeatures[labels[i]] * 100)}</H1>}
+              {i == 5 && <H1>{scoreCardCreditScore}</H1>}
+              <Body>{labels[i]}</Body>
+            </div>
+            {i < 4 && <div style={{ margin: '5px' }}>+</div>}
+            {i == 4 && <div style={{ margin: '10px' }}>=</div>}
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 
@@ -216,7 +226,7 @@ const HomePage = () => {
                   </div>
                 ) : health === 'Standard' ? (
                   <div style={{ display: 'inline-block', borderRadius: '25px', background: '#C0FAE6', padding: '3px' }}>
-                    <H3 style={{ color: '#00684A', display: 'inline', marginBottom: '50px' }}>&nbsp;STANDARD&nbsp;</H3>
+                    <H3 style={{ color: '#00684A', display: 'inline', marginBottom: '50px' }}>&nbsp;NORMAL&nbsp;</H3>
                   </div>
                 ) : (
                   <div style={{ display: 'inline-block', borderRadius: '25px', background: '#C0F9AD', padding: '3px' }}>
