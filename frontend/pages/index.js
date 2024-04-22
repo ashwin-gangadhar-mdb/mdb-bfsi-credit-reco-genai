@@ -61,7 +61,7 @@ const HomePage = () => {
 
       const jsonData = await response.json();
 
-      console.log('jsonData', jsonData);
+      // console.log('jsonData', jsonData);
       if (!jsonData || Object.keys(jsonData).length === 0) {
         window.location.href = '/login';
         return;
@@ -88,11 +88,11 @@ const HomePage = () => {
       const text = await response.json();
       setExplSets(text);
       setLoading2(false);
-      console.log('text', text);
+      // console.log('text', text);
       setHealth(text.userCreditProfile);
       setScorecardScoreFeatures(text.scorecardScoreFeatures)
       setScoreCardCreditScore(text.scoreCardCreditScore)
-      console.log('scorecardScoreFeatures', text.scorecardScoreFeatures)
+      // console.log('scorecardScoreFeatures', text.scorecardScoreFeatures)
       // if (text["approvalStatus"] == "Approved" ) {
       //   await setStatus(true);
       // } else {
@@ -121,6 +121,7 @@ const HomePage = () => {
         body: JSON.stringify(explSets)
       });
       const text = await response.json();
+      // console.log('text', text["productRecommendations"]);
       setRecSets(text["productRecommendations"]);
       setSecondTab(false);
 

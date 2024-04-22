@@ -21,11 +21,12 @@ const LoginPage = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    console.log(clientId, password)
+    // console.log(clientId, password)
     if (clientId.trim() === '' || password.trim() === '') {
       alert('Please enter both Client ID and Password');
     } else {
-      axios.post('http://localhost:5001/login', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/login';
+      axios.post(apiUrl, {
         userId: clientId,
         password: password
       }, {

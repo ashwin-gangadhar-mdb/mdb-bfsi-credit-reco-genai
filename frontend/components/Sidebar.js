@@ -42,7 +42,7 @@ import ProfileSlider from '../components/ProfileSlider';
 
 const Sidebar = ({ profileInfo }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
-  console.log(profileInfo);
+  // console.log(profileInfo);
   const [Name, setName] = useState(profileInfo.Name);
   const [Occupation, setOccupation] = useState(profileInfo.Occupation);
   const [Age, setAge] = useState(profileInfo.Age);
@@ -146,7 +146,7 @@ const Sidebar = ({ profileInfo }) => {
     const filter = { "Customer_ID": parseInt(clientId, 10) }
 
     const body = { "filter": filter, "update": { $set: userData } };
-    console.log('body:', body);
+    // console.log('body:', body);
 
     const response = await axios.post('../api/updateOne', body);
 

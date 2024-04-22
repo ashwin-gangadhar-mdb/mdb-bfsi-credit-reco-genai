@@ -39,8 +39,23 @@ const TextWithImage = ({ items }) => {
           />
           <div>
             <H3>{key}</H3>
-            <Body as="pre" style={{ wordWrap: 'break-word', overflowX: 'hidden', whiteSpace: 'pre-line', overflowX: 'hidden', fontSize: '20px', fontFamily: 'sans-serif',  }} >
-              {itemsJSON[key]}
+            <Body as="pre" style={{ wordWrap: 'break-word', overflowX: 'hidden', whiteSpace: 'pre-line', fontSize: '20px', fontFamily: 'sans-serif' }} >
+              {Array.isArray(itemsJSON[key])
+                ? itemsJSON[key].map((item, idx) => (
+                    <div key={idx} style={{ marginBottom: '16px' }}>
+                      <H3 style={{ margin: 0 }}>{item.title}</H3>
+                      <div>{item.description}</div>
+                    </div>
+                  ))
+                : (typeof itemsJSON[key] === 'object' && itemsJSON[key] !== null
+                    ? Object.entries(itemsJSON[key]).map(([subKey, subValue]) => (
+                        <div key={subKey}>
+                          <strong>{subKey}:</strong> {subValue}
+                        </div>
+                      ))
+                    : itemsJSON[key]
+                  )
+              }
             </Body>
           </div>
         </div>
