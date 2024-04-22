@@ -92,7 +92,10 @@ get_credit_card_recommendations_prompt = PromptTemplate(
     ## Credit cards Recommendations:
     {card_suggestions}
 
-    Output in Json format
+    Output in Json format example below
+    ```json
+    
+    ````
 
     ## Format Instructions: {format_instruction}
 
@@ -123,9 +126,12 @@ user_profile_based_cc_rec_prompt = PromptTemplate(
     - Take into account user annual income, occupation, montly inhand salary while preparing search term to query the vector search
     -{search_term_suggestion}
 
-    Output in Json format
+    Output in Json format example below
+    ```json
 
-    ##Format Instructions:{format_instruction}
+    ````
+    
+    ## Result Format Instructions:{format_instruction}
     
 
     """,
