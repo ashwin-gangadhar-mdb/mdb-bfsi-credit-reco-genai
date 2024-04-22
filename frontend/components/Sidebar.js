@@ -16,11 +16,28 @@ import ProfileSlider from '../components/ProfileSlider';
 // Occupation
 // Annual_Income
 // Monthly_Inhand_Salary
+// Delay_from_due_date
+// Num_of_Delayed_Payment
 // Credit_Mix
 // Credit_Utilization_Ratio
 // Type_of_Loan
 // Monthly_Balance
 // Payment_Behaviour
+
+// Outstanding_Debt 0.1606545
+// Interest_Rate 0.14227411
+// Annual_Income 0.107903264
+// Monthly_Rental_Commitment 0.07572761
+// Monthly_Inhand_Salary 0.057784867
+// Num_of_Delayed_Payment 0.019657858
+// Delay_from_due_date 0.013122446
+// Num_Bank_Accounts 0.01130122
+// Num_Credit_Card 0.010898941
+// Num_Credit_Inquiries 0.008201968
+// Total_EMI_per_month 0.0059829
+// Changed_Credit_Limit 0.0058596977
+// Num_of_Loan 0.0036665471
+// Payment_Behaviour 0.0016400967
 
 
 const Sidebar = ({ profileInfo }) => {
@@ -40,8 +57,10 @@ const Sidebar = ({ profileInfo }) => {
   const [Outstanding_Debt, setOutstanding_Debt] = useState(profileInfo.Outstanding_Debt);
   const [Num_Credit_Card, setNum_Credit_Card] = useState(profileInfo.Num_Credit_Card);
   const [Num_Bank_Accounts, setNum_Bank_Accounts] = useState(profileInfo.Num_Bank_Accounts);
+  const [Num_Delayed_Payments, setNumOfDelayedPayments] = useState(profileInfo.Num_of_Delayed_Payment);
   const [Total_EMI_per_month, setTotal_EMI_per_month] = useState(profileInfo.Total_EMI_per_month);
   const [Monthly_Inhand_Salary, setMonthly_Inhand_Salary] = useState(profileInfo.Monthly_Inhand_Salary);
+  const [Monthly_Rental_Commitment, setMonthlyRentalCommitment] = useState(profileInfo.Monthly_Rental_Commitment);
 
 
   const setters = {
@@ -57,8 +76,10 @@ const Sidebar = ({ profileInfo }) => {
     outstandingDebt: setOutstanding_Debt,
     numCreditCard: setNum_Credit_Card,
     numBankAccounts: setNum_Bank_Accounts,
+    numDelayedPayments: setNumOfDelayedPayments,
     totalEMIperMonth: setTotal_EMI_per_month,
-    monthlyInhandSalary: setMonthly_Inhand_Salary
+    monthlyInhandSalary: setMonthly_Inhand_Salary,
+    monthlyRentalCommitment: setMonthlyRentalCommitment
   };
 
   const defaultSliderStyle = {
@@ -111,12 +132,13 @@ const Sidebar = ({ profileInfo }) => {
   const handleSubmit = async () => {
 
     const userData = {
-      ...(Interest_Rate !== null && { "Interest_Rate": parseFloat(Interest_Rate) }),
+      ...(Monthly_Rental_Commitment !== null && { "Monthly_Rental_Commitment": parseFloat(Monthly_Rental_Commitment) }),
       ...(Outstanding_Debt !== null && { "Outstanding_Debt": parseFloat(Outstanding_Debt) }),
       ...(Num_Credit_Card !== null && { "Num_Credit_Card": parseInt(Num_Credit_Card, 10) }),
       ...(Num_Bank_Accounts !== null && { "Num_Bank_Accounts": parseInt(Num_Bank_Accounts, 10) }),
       ...(Total_EMI_per_month !== null && { "Total_EMI_per_month": parseFloat(Total_EMI_per_month) }),
       ...(Monthly_Inhand_Salary !== null && { "Monthly_Inhand_Salary": parseFloat(Monthly_Inhand_Salary) }),
+      ...(Num_Delayed_Payments !== null && { "Num_Delayed_Payments": parseInt(Num_Delayed_Payments, 100) }),
     };
     console.log('Submitted user data:', userData);
 
@@ -161,18 +183,20 @@ const Sidebar = ({ profileInfo }) => {
             <>
 
               <div className={styles.profileItem}>
-                <Body style={{ width: "20%" }}><strong>Interest Rate:&nbsp; </strong></Body>
-                <Slider onChange={(event) => handleSliderChange(event, 'interestRate')}
+                <Body style={{ width: "20%" }}><strong>Monthly Rentals:&nbsp; </strong></Body>
+                <Slider onChange={(event) => handleSliderChange(event, 'monthlyRentalCommitment')}
                   styles={defaultSliderStyle}
-                  defaultValue={Interest_Rate} style={{ width: "55%" }} />
-                <Body baseFontSize={9} style={{ width: "10%" }}>{Interest_Rate}</Body>
+                  defaultValue={Monthly_Rental_Commitment} style={{ width: "55%" }} 
+                  min={0} max={Annual_Income}/>
+                <Body baseFontSize={9} style={{ width: "10%" }}>${Monthly_Rental_Commitment.toFixed(0)}</Body>
               </div>
 
               <div className={styles.profileItem}>
                 <Body style={{ width: "20%" }}><strong>Outstanding Debt:&nbsp;</strong></Body>
                 <Slider max={10000} onChange={(event) => handleSliderChange(event, 'outstandingDebt')}
                   styles={defaultSliderStyle}
-                  defaultValue={Outstanding_Debt} style={{ width: "55%" }} />
+                  defaultValue={Outstanding_Debt} style={{ width: "55%" }} 
+                  min={0} max={999999} />
                 <Body baseFontSize={9} style={{ width: "10%" }}>${Outstanding_Debt.toFixed(0)}</Body>
               </div>
 
@@ -181,7 +205,8 @@ const Sidebar = ({ profileInfo }) => {
                 <Body style={{ width: "20%" }}><strong>Num Credit Card:&nbsp;</strong></Body>
                 <Slider max={20} onChange={(event) => handleSliderChange(event, 'numCreditCard')}
                   styles={defaultSliderStyle}
-                  defaultValue={Num_Credit_Card} style={{ width: "55%" }} />
+                  defaultValue={Num_Credit_Card} style={{ width: "55%" }} 
+                  min={0} max={99} />
                 <Body baseFontSize={9} style={{ width: "10%" }}>{Num_Credit_Card.toFixed(0)}</Body>
               </div>
 
@@ -189,7 +214,8 @@ const Sidebar = ({ profileInfo }) => {
                 <Body style={{ width: "20%" }}><strong>Num Bank Accounts:&nbsp;</strong></Body>
                 <Slider max={20} onChange={(event) => handleSliderChange(event, 'numBankAccounts')}
                   styles={defaultSliderStyle}
-                  defaultValue={Num_Bank_Accounts} style={{ width: "55%" }} />
+                  defaultValue={Num_Bank_Accounts} style={{ width: "55%" }} 
+                  min={0} max={99} />
                 <Body baseFontSize={9} style={{ width: "10%" }}>{Num_Bank_Accounts.toFixed(0)}</Body>
               </div>
 
@@ -197,7 +223,8 @@ const Sidebar = ({ profileInfo }) => {
                 <Body style={{ width: "20%" }}><strong>Total EMI per month:&nbsp;</strong></Body>
                 <Slider max={100000} onChange={(event) => handleSliderChange(event, 'totalEMIperMonth')}
                   styles={defaultSliderStyle}
-                  defaultValue={Total_EMI_per_month} style={{ width: "55%" }} />
+                  defaultValue={Total_EMI_per_month} style={{ width: "55%" }} 
+                  min={0} max={9999}/>
                 <Body baseFontSize={9} style={{ width: "10%" }}>${Total_EMI_per_month.toFixed(0)}</Body>
               </div>
 
@@ -205,10 +232,21 @@ const Sidebar = ({ profileInfo }) => {
                 <Body style={{ width: "20%" }}><strong>Monthly Inhand Salary:&nbsp;</strong></Body>
                 <Slider max={100000} onChange={(event) => handleSliderChange(event, 'monthlyInhandSalary')}
                   styles={defaultSliderStyle}
-                  defaultValue={Monthly_Inhand_Salary} style={{ width: "55%" }} />
+                  defaultValue={Monthly_Inhand_Salary} style={{ width: "55%" }} 
+                  min={0} max={99999}/>
                 <Body baseFontSize={9} style={{ width: "10%" }}>${Monthly_Inhand_Salary.toFixed(0)}</Body>
               </div>
 
+              <div className={styles.profileItem}>
+                <Body style={{ width: "20%" }}><strong>Num of Delayed Payments:&nbsp;</strong></Body>
+                <Slider max={100000} onChange={(event) => handleSliderChange(event, 'numDelayedPayments')}
+                  styles={defaultSliderStyle}
+                  defaultValue={Num_Delayed_Payments} style={{ width: "55%" }} 
+                  min={0} max={999}/>
+                <Body baseFontSize={9} style={{ width: "10%" }}>{Num_Delayed_Payments}</Body>
+              </div>
+
+              <br></br>
               <br></br>
               <div className={styles.profileItem}>
                 <Body style={{ width: "25%" }}><strong>Credit Mix:&nbsp;</strong></Body>
