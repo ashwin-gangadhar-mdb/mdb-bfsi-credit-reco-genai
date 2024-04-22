@@ -91,6 +91,9 @@ def get_credit_card_recommendations(user_profile, user_profile_ip, pred, allowed
         allowed_credit_limit (float): The allowed credit limit.
         card_suggestions (str): The card suggestions string.
 
+    Returns:
+        str: The card suggestions with personalized summary based on the user profile and prediction.
+
     """
     prompt = get_credit_card_recommendations_prompt.format(user_profile=user_profile,\
                                                   user_profile_ip=user_profile_ip,\
@@ -110,35 +113,51 @@ def get_credit_card_recommendations(user_profile, user_profile_ip, pred, allowed
 
 @lru_cache(100)
 def get_product_suggestions_1(user_profile, user_profile_ip, pred, allowed_credit_limit):
+    """
+    Retrieves product suggestions based on user profile and prediction.
 
-    search_term_suggestions = ["suggest card that have the usage of words like priority pass, zenith,lifetime free, super premium, ultra luxury, dining benefits, concerige services , premium, co branded, travel, cashback, rewards, dining, shopping, fuel, lifestyle, entertainment, airport, lounge, golf, movie, hotel, concierge, insurance, wellness, health, fitness, luxury, exclusive, signature, platinum, gold, silver, titanium, contactless, contact-free, contact less, contact free, virtual, digital, online, offline, international, domestic, global, local, zero, no, low, minimum, maximum, high",\
-                            "suggest card that have the usage limits, cashback, basic, 50 days repayment cycle, low annual fee, basic features, low joining fees, higher interest rate",\
-                            "suggest card that have usage of words cashback, with moderate credit limit and features, annual fee waiver on spends, redeem gifts on reward points"]
+    Args:
+        user_profile (str): The user profile information.
+        user_profile_ip (str): The user profile input in JSON format.
+        pred (str): The prediction for the user profile ('Good', 'Poor', or 'Standard').
+        allowed_credit_limit (float): The allowed credit limit for the user.
 
-    if pred=='Good':
+    Returns:
+        str: The card suggestions based on the user profile and prediction.
+    """
+
+    search_term_suggestions = [
+        "suggest card that have the usage of words like priority pass, zenith, lifetime free, super premium, ultra luxury, dining benefits, concerige services, premium, co branded, travel, cashback, rewards, dining, shopping, fuel, lifestyle, entertainment, airport, lounge, golf, movie, hotel, concierge, insurance, wellness, health, fitness, luxury, exclusive, signature, platinum, gold, silver, titanium, contactless, contact-free, contact less, contact free, virtual, digital, online, offline, international, domestic, global, local, zero, no, low, minimum, maximum, high",
+        "suggest card that have the usage limits, cashback, basic, 50 days repayment cycle, low annual fee, basic features, low joining fees, higher interest rate",
+        "suggest card that have usage of words cashback, with moderate credit limit and features, annual fee waiver on spends, redeem gifts on reward points"
+    ]
+
+    if pred == 'Good':
         search_term_suggestion = search_term_suggestions[0]
-    elif pred=='Poor':
+    elif pred == 'Poor':
         search_term_suggestion = search_term_suggestions[1]
-    elif pred=='Standard':
+    elif pred == 'Standard':
         search_term_suggestion = search_term_suggestions[2]
-    
+
     user_profile_ip = json.loads(user_profile_ip)
-    reco_prompt = user_profile_based_cc_rec_prompt.format(user_profile=user_profile, \
-                                                        annual_income=user_profile_ip["Annual_Income"], \
-                                                        occupation=user_profile_ip["Occupation"], \
-                                                        monthly_inhand_salary=user_profile_ip["Monthly_Inhand_Salary"], \
-                                                        pred=pred, \
-                                                        allowed_credit_limit=allowed_credit_limit,
-                                                        search_term_suggestion=search_term_suggestion)
+    reco_prompt = user_profile_based_cc_rec_prompt.format(
+        user_profile=user_profile,
+        annual_income=user_profile_ip["Annual_Income"],
+        occupation=user_profile_ip["Occupation"],
+        monthly_inhand_salary=user_profile_ip["Monthly_Inhand_Salary"],
+        pred=pred,
+        allowed_credit_limit=allowed_credit_limit,
+        search_term_suggestion=search_term_suggestion
+    )
     resp = invoke_llm(reco_prompt)
     parsed_resp = recommendation_parser.parse(resp)
-    
+
     card_suggestions = json.loads(parsed_resp.json())['card_suggestions']
     recs = []
     for suggestion in card_suggestions:
         recs += retriever.get_relevant_documents(f"{suggestion['name']}: {suggestion['description']}")
 
-    card_suggestions= ""
+    card_suggestions = ""
     for r in recs:
         card_suggestions += f'- Card name:{" ".join(r.metadata["title"].split("-"))} card \n  Card Features:{r.page_content} +\n'
     return card_suggestions
