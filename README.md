@@ -91,6 +91,7 @@ Edit the `.env` file in the root directory as needed. Example:
 ```env
 MONGO_CONNECTION_STRING=mongodb://root:example@mongo:27017/?authSource=admin
 FIREWORKS_API_KEY=fw_
+NEXT_PUBLIC_API_URL=http://localhost:5001
 # Add other keys as needed
 ```
 
